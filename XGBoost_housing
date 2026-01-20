@@ -1,0 +1,47 @@
+Imports 
+
+import pandas as pd import numpy as np import matplotlib.pyplot as plt from sklearn.model_selection import train_test_split from sklearn.ensemble import GradientBoostingRegressor from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error 
+
+Load data 
+
+df = pd.read_csv('Housing.csv') 
+
+Data Preprocessing 
+
+Convert binary categorical features to 0/1 
+
+binary_cols = ['mainroad', 'guestroom', 'basement', 'hotwaterheating', 'airconditioning', 'prefarea'] mapping = {'yes': 1, 'no': 0} 
+
+Fix: Iterate and apply map, then explicitly cast to integer to avoid FutureWarning 
+
+for col in binary_cols: df[col] = df[col].map(mapping).astype(int) 
+
+One-hot encode the 'furnishingstatus' column 
+
+df = pd.get_dummies(df, columns=['furnishingstatus'], drop_first=True) 
+
+Separate features (X) and target (y) 
+
+X = df.drop('price', axis=1) y = df['price'] 
+
+Split data into training and testing sets 
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42) 
+
+Train the Gradient Boosting Regressor model 
+
+gbr = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42) gbr.fit(X_train, y_train) 
+
+Predict on the test set 
+
+y_pred = gbr.predict(X_test) 
+
+Calculate and display accuracy metrics 
+
+r2 = r2_score(y_test, y_pred) mae = mean_absolute_error(y_test, y_pred) rmse = np.sqrt(mean_squared_error(y_test, y_pred)) 
+
+print(f"R-squared (R^2): {r2:.4f}") print(f"Mean Absolute Error (MAE): {mae:.2f}") print(f"Root Mean Squared Error (RMSE): {rmse:.2f}") 
+
+ Plot Visual (Actual vs. Predicted Prices) 
+
+plt.figure(figsize=(10, 6)) plt.scatter(y_test, y_pred, alpha=0.6) plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2) plt.title('Gradient Boosting Regressor: Actual vs. Predicted Housing Prices') plt.xlabel('Actual Price') plt.ylabel('Predicted Price') plt.grid(True) plt.savefig('actual_vs_predicted_housing_prices_fixed.png') 
