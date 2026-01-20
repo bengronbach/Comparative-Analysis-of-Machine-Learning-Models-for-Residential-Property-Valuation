@@ -1,4 +1,7 @@
 # Comparative-Analysis-of-Machine-Learning-Models-for-Residential-Property-Valuation
+
+NOTE: This project was completed in October 2025 and serves as a foundational stepping stone for my ML journey.
+
 Building and Comparing Traditional ML Regression Models to Estimate Housing Prices
 This study examined the capabilities of multiple supervised machine learning models: Decision Tree Regressor, Random Forest Regressor, Gradient Boosting Regressor, and Support Vector Regression, and evaluated their performance in predicting prices of residential homes. Each model demonstrated different strategies in taking complex, non-linear data and outputting an estimated price. 
 
